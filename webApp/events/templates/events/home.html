@@ -1,0 +1,97 @@
+{% extends 'events/base.html' %}
+{% load static %}
+{% block content %}
+	
+	<h1>Hello {{ request.user.first_name }}! Events For {{ month }} {{ year }}</h1>
+
+	<br/><br/>
+	<!-- Slideshow container -->
+<link rel="stylesheet" href="{% static 'events/slideshow.css' %}">
+<script src="{% static 'events/slideshow.js' %}"></script>
+
+           
+	
+
+<div class="slideshow-container">
+
+	<!-- Full-width images with number and caption text -->
+    
+	<div class="mySlides fade">
+		{% for image in venue %}
+		<div class="numbertext"></div>	
+		
+		<img src=" {{image.venue_image.url }}" style="width:100%">
+		
+		<div class="text">Caption Text</div>
+		{% endfor %}
+	  </div>
+
+	  
+	  
+  
+	<!-- Next and previous buttons -->
+	<a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+	<a class="next" onclick="plusSlides(1)">&#10095;</a>
+  </div>
+  <br>
+  
+  <!-- The dots/circles -->
+  <div style="text-align:center">
+	<span class="dot" onclick="currentSlide(1)"></span>
+	<span class="dot" onclick="currentSlide(2)"></span>
+	<span class="dot" onclick="currentSlide(3)"></span>
+  </div>
+
+	<h3>Events This Month...</h3>
+
+	{% if event_list %}
+		{% for event in event_list %}
+		<div class="card">
+  <div class="card-header">
+    {{ event }}
+  </div>
+  <div class="card-body">
+    <h5 class="card-title">Venue: {{ event.venue }}</h5>
+    <p class="card-text">
+    	<ul>
+<li>Date: {{ event.event_date }}</li>
+
+<li>Venue Website: {{ event.venue.web }}</li>
+<li>Manager: {{ event.manager }}</li>
+<li>Description: {{ event.description }}</li>
+	<li>Attendees:<br/>
+	{% for user in event.attendees.all %}
+{{ user }}<br/>
+	{% endfor %}
+	</li>
+	</ul>
+
+
+
+    </p>
+  </div>
+  {% if user.is_authenticated %}
+    {% if user == event.manager %}
+      <div class="card-footer text-muted">
+        
+        <a href="{% url 'update-event' event.id %}" class="btn btn-outline-secondary btn-sm">Update Event</a>
+
+        <a href="{% url 'delete-event' event.id %}" class="btn btn-outline-danger btn-sm">Delete Event</a>
+        
+      </div>
+    {% endif %}  
+  {% endif %}
+</div>
+		<br/>
+		{% endfor %}
+
+	{% else %}
+	Sorry...There are no events this month...
+	{% endif %}
+
+	<center>
+	<br/><br/><br/><br/>
+	Copyright (c) {{ current_year }}
+
+	</center>
+{% endblock %}
