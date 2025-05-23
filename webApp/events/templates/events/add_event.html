@@ -1,10 +1,9 @@
 {% extends 'events/base.html' %}
-
 {% block content %}
 
 {% if user.is_authenticated %}
-<div class="card">
-	<div class="card-header bg-primary text-white">
+<div class="card-body">
+  <div class="card-header bg-primary text-white">
 	  <h2>Add Event</h2>
 	</div>
   </div>
@@ -14,7 +13,7 @@
 		Your Event Was Submitted Succefully!!!
 
 	{% else %}
-
+    <div class="card-body">
 		<form action="" method=POST>
 			{% csrf_token %}
 
@@ -23,6 +22,7 @@
 			<input type="submit" value="Submit" class="btn btn-secondary">
 
 		</form>
+	</div>
 		{% endif %}
 
 <br/><br/>	
